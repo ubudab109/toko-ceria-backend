@@ -1,0 +1,1 @@
+import{j as r}from"./app-DVTrhL1p.js";import{D as o}from"./DashboardLayout-CbH_iNkr.js";import t from"./CategoryForm-BP7p4Sqt.js";import"./index-ikzcNs2d.js";import"./createLucideIcon-CpnvUODs.js";import"./ButtonBack-9t6ATpas.js";function d(){return r.jsx(o,{children:r.jsx("div",{children:r.jsx(t,{isEdit:!1})})})}export{d as default};
