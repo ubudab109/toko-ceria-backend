@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import { resolve } from 'path';
-import { writeFileSync, mkdirSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 
 export default defineConfig({
     plugins: [
@@ -13,15 +13,14 @@ export default defineConfig({
         }),
         tailwindcss(),
         {
-            // plugin tambahan buat paksa copy manifest
             name: 'force-manifest-location',
             closeBundle() {
                 const src = './public/build/.vite/manifest.json';
                 const dest = './public/build/manifest.json';
                 if (existsSync(src)) {
-                    const content = require(src);
+                    const content = readFileSync(src, 'utf8');
                     mkdirSync('./public/build', { recursive: true });
-                    writeFileSync(dest, JSON.stringify(content, null, 2));
+                    writeFileSync(dest, content);
                     console.log('✅ Manifest copied to public/build/manifest.json');
                 } else {
                     console.warn('⚠️ Manifest not found at .vite');
