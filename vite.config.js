@@ -23,4 +23,15 @@ export default defineConfig({
             '@': resolve(__dirname, 'resources/js'),
         },
     },
+    server: {
+        host: '0.0.0.0',
+        port: 5174,
+        strictPort: true,
+        origin: 'http://localhost:5174',
+        hmr: {
+          host: 'localhost',
+          protocol: 'ws',
+          port: 5174,
+        },
+      },
 });
