@@ -12,8 +12,8 @@ export default defineConfig({
         tailwindcss(),
     ],
     build: {
-        outDir: 'public/build',
         manifest: true,
+        outDir: 'public/dist',
         rollupOptions: {
             input: 'resources/js/app.tsx',
         },

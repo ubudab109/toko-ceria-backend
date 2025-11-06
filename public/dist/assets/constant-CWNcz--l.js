@@ -1,1 +1,0 @@
-document.documentElement.classList.contains("dark");const l=["ml","L","g","kg","pcs","bottle"],a=[{label:"CASH",value:"CASH"},{label:"QRIS",value:"QRIS"},{label:"MIDTRANS",value:"MIDTRANS"},{label:"WHATSAPP",value:"whatsapp"}];export{l as M,a as P};
