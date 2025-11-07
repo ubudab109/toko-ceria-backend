@@ -1,6 +1,6 @@
 import React from "react";
 import { router } from "@inertiajs/react";
-import { Plus, RefreshCcwIcon, Search } from "lucide-react";
+import { FileDown, Plus, RefreshCcwIcon, Search } from "lucide-react";
 import Select, { MultiValue } from 'react-select';
 import { useSelectStyles } from "@/hooks/useSelectStyle";
 import { OptionType } from "@/types/option.type";
@@ -26,10 +26,10 @@ export interface PaginatedData<T> {
 export interface FilterConfig {
   name: string;
   label: string;
-  options: OptionType[];
-  value?: string | number | (string | number)[];
+  options?: OptionType[]; // optional karena date_range ga pake options
+  value?: string | number | (string | number)[] | { startDate?: string; endDate?: string };
   isMultiple?: boolean;
-  onChange: (value: string | (string | number)[]) => void;
+  onChange: (value: string | (string | number)[] | { startDate?: string; endDate?: string }) => void;
 }
 
 interface AddButtonConfig {
@@ -47,6 +47,9 @@ interface DataTableProps<T> {
   filters?: FilterConfig[];
   addButton?: AddButtonConfig;
   scrollToTopOnPaginate?: boolean;
+  onExport?: () => void;
+  showExport?: boolean;
+  buttonAdd?: boolean
 }
 
 export function DataTable<T extends { id: number }>({
@@ -57,7 +60,9 @@ export function DataTable<T extends { id: number }>({
   onSearch,
   filters,
   addButton,
-  scrollToTopOnPaginate = true
+  scrollToTopOnPaginate = true,
+  showExport = false,
+  onExport,
 }: DataTableProps<T>) {
   const selectStyles = useSelectStyles<OptionType, true>({
     width: '15rem'
@@ -85,7 +90,7 @@ export function DataTable<T extends { id: number }>({
     if (!filter.options || !filter.value) return [];
     const currentValues = Array.isArray(filter.value) ? filter.value : [filter.value];
     return currentValues
-      .map(val => filter.options.find(opt => String(opt.value) === String(val)))
+      .map(val => filter.options?.find(opt => String(opt.value) === String(val)))
       .filter((opt): opt is OptionType => !!opt);
   };
 
@@ -134,27 +139,51 @@ export function DataTable<T extends { id: number }>({
               <label htmlFor={filter.name} className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
                 {filter.label}:
               </label>
-              {filter.isMultiple ? (
+              {filter.name === 'date_range' ? (
+                <div className="flex gap-2 items-center">
+                  <input
+                    type="date"
+                    value={(filter.value as any)?.startDate || ''}
+                    onChange={(e) =>
+                      filter.onChange({
+                        ...(filter.value as any),
+                        startDate: e.target.value || undefined,
+                      })
+                    }
+                    className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-700 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  <span className="text-gray-500 dark:text-gray-400">to</span>
+                  <input
+                    type="date"
+                    value={(filter.value as any)?.endDate || ''}
+                    onChange={(e) =>
+                      filter.onChange({
+                        ...(filter.value as any),
+                        endDate: e.target.value || undefined,
+                      })
+                    }
+                    className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-700 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              ) : filter.isMultiple ? (
                 <Select
-                  id={filter.name}
                   isMulti
                   options={filter.options}
-                  onChange={(selectedOptions) => handleFilterChange(selectedOptions as MultiValue<OptionType>, filter)}
                   value={getReactSelectValue(filter)}
+                  onChange={(selectedOptions) => handleFilterChange(selectedOptions as MultiValue<OptionType>, filter)}
                   styles={selectStyles}
                   classNamePrefix="react-select"
                   placeholder={`Select ${filter.label}...`}
                 />
               ) : (
                 <select
-                  id={filter.name}
                   value={getNativeSelectValue(filter.value)}
                   onChange={(e) => handleFilterChange(e, filter)}
                   className="border border-gray-300 dark:border-gray-600 rounded-lg py-2 bg-white dark:bg-gray-700 
-                    text-gray-800 dark:text-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors px-3 appearance-none w-36"
+      text-gray-800 dark:text-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors px-3 appearance-none w-36"
                 >
                   <option value="">All</option>
-                  {filter.options.map((opt) => (
+                  {filter.options?.map((opt) => (
                     <option key={opt.value} value={opt.value}>
                       {opt.label}
                     </option>
@@ -174,6 +203,17 @@ export function DataTable<T extends { id: number }>({
           <RefreshCcwIcon className="w-4 h-4" />
           Refresh
         </button>
+        {
+          showExport && (
+            <button
+              onClick={onExport}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded-lg hover:bg-gray-700 transition shadow-md dark:bg-gray-700 dark:hover:bg-gray-800"
+            >
+              <FileDown className="w-4 h-4" />
+              Export
+            </button>
+          )
+        }
       </div>
       {/* Table */}
       <div className="overflow-x-auto border border-gray-200 dark:border-gray-700 rounded-lg">

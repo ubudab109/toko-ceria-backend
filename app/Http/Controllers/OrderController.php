@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Constants\InventoryHistoryType;
 use App\Constants\OrderStatus;
+use App\Jobs\ExportOrderReportJob;
 use App\Models\Customer;
+use App\Models\DataExport;
 use App\Models\Inventory;
 use App\Models\InventoryHistory;
 use App\Models\Order;
@@ -54,6 +56,17 @@ class OrderController extends Controller
         if ($request->has('checkout_type') && !empty($request->checkout_type)) {
             $query->where('checkout_type', $request->checkout_type);
         }
+        $startDate = null;
+        $endDate = null;
+        if ($request->has('date_range') && !empty($request->date_range)) {
+            $date = explode(',', $request->date_range);
+            $startDate = $date[0];
+            $query->whereDate('created_at', '>=', $startDate);
+            if (!empty($date[1])) {
+                $endDate = $date[1];
+                $query->whereDate('created_at', '<=', $endDate);
+            }
+        }
 
         $orders = $query->with('customer', 'productOrders.product')->orderBy('created_at', 'desc')->paginate(10)
             ->withQueryString();
@@ -64,6 +77,10 @@ class OrderController extends Controller
             'statuses' => $statuses,
             'filters' => [
                 'search' => $search,
+                'date_range' => [
+                    'startDate' => $startDate,
+                    'endDate' => $endDate
+                ]
             ]
         ]);
     }
@@ -397,6 +414,32 @@ class OrderController extends Controller
     {
         Order::where('id', $id)->delete();
         return redirect()->back()->with('success', 'Data order berhasil dihapus!');
+    }
+
+    public function exportOrders(Request $request)
+    {
+        $request->validate([
+            'date_start' => 'required|date',
+            'date_end' => 'required|date|after_or_equal:date_start',
+            'status' => 'nullable|array',
+            'status.*' => 'string',
+        ]);
+
+        $filters = [
+            'date_start' => $request->date_start,
+            'date_end' => $request->date_end,
+            'status' => $request->status ?? [],
+        ];
+
+        $export = DataExport::create([
+            'export_type' => 'order',
+            'filters' => $filters,
+            'status' => 'pending',
+        ]);
+
+        dispatch(new ExportOrderReportJob($export));
+
+        return redirect()->back()->with('success', 'Proses ekspor order telah dilakukan. Mohon periksa pada list menu Eksport!');
     }
 
     public function generateOrderNumber()

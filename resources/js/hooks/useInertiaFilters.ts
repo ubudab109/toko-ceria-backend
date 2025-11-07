@@ -2,7 +2,7 @@ import { router } from "@inertiajs/react";
 import { route } from "ziggy-js";
 import { useState } from "react";
 
-type FilterValue = string | number | string[] | undefined;
+type FilterValue = string | number | string[] | { startDate?: string; endDate?: string } | undefined;
 
 interface UseInertiaFiltersOptions<T extends Record<string, any>> {
   initialFilters: T;
@@ -42,27 +42,31 @@ export function useInertiaFilters<T extends Record<string, any>>({
   };
 
   // 🎛️ Handle any filter change
-  const handleFilterChange = (key: keyof T, value: string | number | (string | number)[], param?: number | string) => {
-    let newValue: string | string[] | undefined;
+  const handleFilterChange = (
+    key: keyof T,
+    value: string | number | (string | number)[] | { startDate?: string; endDate?: string } | null,
+    param?: number | string
+  ) => {
+    let newValue: FilterValue;
     let finalValue: string | null;
 
-    if (Array.isArray(value)) {
-      // Multi-select
+    if (value && typeof value === 'object' && 'startDate' in value) {
+      // date_range
+      newValue = value;
+      finalValue = value.startDate || value.endDate
+        ? `${value.startDate || ''},${value.endDate || ''}`
+        : null;
+    } else if (Array.isArray(value)) {
       newValue = value.map(String);
-      finalValue = value.length ? value.map(String).join(",") : null;
+      finalValue = value.length ? value.map(String).join(',') : null;
     } else {
-      // Single select or text
-      newValue = value ? String(value) : "";
+      newValue = value ? String(value) : '';
       finalValue = value ? String(value) : null;
     }
 
     setLocalFilters((prev) => ({ ...prev, [key]: newValue }));
-    let routes: string = '';
-    if (param) {
-      routes = route(baseRoute, param);
-    } else {
-      routes = route(baseRoute);
-    }
+    const routes = param ? route(baseRoute, param) : route(baseRoute);
+
     router.get(
       routes,
       { ...initialFilters, [key]: finalValue, page: 1 },

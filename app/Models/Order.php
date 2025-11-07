@@ -36,4 +36,13 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
+
+    public function customerName(): string
+    {
+        if ($customer = $this->customer) {
+            return "{$customer->fullname} - {$customer->email}";
+        } else {
+            return '-';
+        }
+    }
 }

@@ -23,6 +23,9 @@
         "@inertiajs/react": "^2.2.15",
         "@tailwindcss/postcss": "^4.1.16",
         "@vitejs/plugin-react": "^5.1.0",
+        "dayjs": "^1.11.19",
+        "flowbite": "^3.1.2",
+        "flowbite-react": "^0.12.10",
         "laravel-echo": "^2.2.6",
         "lucide-react": "^0.552.0",
         "pusher-js": "^8.4.0",
@@ -30,6 +33,7 @@
         "react-dom": "^19.2.0",
         "react-hot-toast": "^2.6.0",
         "react-select": "^5.10.2",
+        "react-tailwindcss-datepicker": "^2.0.0",
         "ziggy-js": "^2.6.0"
     }
 }
