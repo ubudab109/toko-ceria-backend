@@ -63,12 +63,14 @@ class OrderController extends Controller
         $startDate = null;
         $endDate = null;
         if ($request->has('date_range') && !empty($request->date_range)) {
-            $date = explode(',', $request->date_range);
-            $startDate = $date[0];
-            $query->whereDate('created_at', '>=', $startDate);
-            if (!empty($date[1])) {
-                $endDate = $date[1];
-                $query->whereDate('created_at', '<=', $endDate);
+            if (!is_array($request->date_range)) {
+                $date = explode(',', $request->date_range);
+                $startDate = $date[0];
+                $query->whereDate('created_at', '>=', $startDate);
+                if (!empty($date[1])) {
+                    $endDate = $date[1];
+                    $query->whereDate('created_at', '<=', $endDate);
+                }
             }
         }
 
