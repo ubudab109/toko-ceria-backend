@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BaggageClaim, BottleWine, ShoppingCart, UserCog2Icon } from 'lucide-react';
+import { BaggageClaim, BottleWine, DownloadCloudIcon, ShoppingCart, UserCog2Icon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { route } from 'ziggy-js';
 
@@ -77,6 +77,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             routeName: 'orders.index',
             icon: (
                 <ShoppingCart />
+            ),
+        },
+        {
+            name: 'Ekspor',
+            href: route('data-exports.index'),
+            routeName: 'data-exports.index',
+            icon: (
+                <DownloadCloudIcon />
             ),
         },
     ];

@@ -5,14 +5,16 @@ import { useInertiaFilters } from "@/hooks/useInertiaFilters";
 import { OrderI, OrderStatusI, ProductOrderI } from "@/interfaces/OrderInterface";
 import { PaginationI } from "@/interfaces/PaginationInterface";
 import DashboardLayout from "@/layouts/DashboardLayout";
-import { formatRupiah } from "@/utils/helpert";
+import { formatDate, formatRupiah } from "@/utils/helpert";
 import { router, usePage } from "@inertiajs/react";
+import toast from "react-hot-toast";
 import { route } from "ziggy-js";
 
 interface FiltersI {
     search: string;
     statuses: string | null;
     checkout_type: string | null;
+    date_range: { startDate?: string; endDate?: string } | null;
 }
 
 interface OrderPageProps extends PageProps {
@@ -76,6 +78,14 @@ export default function Index(): React.ReactNode {
             },
         },
         {
+            key: 'created_at', label: 'Tanggal order', render: (row: OrderI) => {
+                if (row.created_at) {
+                    return formatDate(row.created_at?.toString());
+                }
+                return '-';
+            }
+        },
+        {
             key: "action", label: "Action", render: row => (
                 <ActionGroup
                     onDelete={() => null}
@@ -89,12 +99,32 @@ export default function Index(): React.ReactNode {
     return (
         <DashboardLayout>
             <div className="p-8">
-            <DataTable<OrderI>
+                <DataTable<OrderI>
                     title="Order List"
                     columns={columns}
                     data={orders}
+                    showExport={true}
                     search={typeof localFilters.search === 'string' ? localFilters.search : ''}
                     onSearch={handleSearch}
+                    onExport={() => {
+                        console.log('filters', filters);
+                        if (filters.date_range?.startDate && filters.date_range.endDate) {
+                            router.post(route('export.orders'), {
+                                date_start: filters.date_range.startDate,
+                                date_end: filters.date_range.endDate,
+                            }, {
+                                onSuccess: () => {
+                                    toast.success('Proses export data order telah dilakukan. Mohon menunggu sampai proses selesai');
+                                },
+                                onError: (err: any) => {
+                                    console.log('error export', err);
+                                    toast.error('Terjadi kesalahan mohon ulangi proses Anda');
+                                }
+                            });
+                        } else {
+                            toast.error('Mohon memilih tanggal sebelum export');
+                        }
+                    }}
                     addButton={{ label: "Tambah Order Manual", href: route("orders.create") }}
                     filters={[
                         {
@@ -115,6 +145,12 @@ export default function Index(): React.ReactNode {
                             ],
                             value: localFilters.checkout_type,
                             onChange: (v) => handleFilterChange('checkout_type', v),
+                        },
+                        {
+                            name: "date_range",
+                            label: "Tanggal Order",
+                            value: localFilters.date_range,
+                            onChange: (v) => handleFilterChange('date_range', v),
                         }
                     ]}
                 />

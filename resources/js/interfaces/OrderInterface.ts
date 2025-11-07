@@ -32,5 +32,6 @@ export interface OrderI {
   status: OrderStatus;
   product_orders: ProductOrderI[];
   customer: CustomerI;
+  created_at?: Date;
   notes?: string | null;
 }

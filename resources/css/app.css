@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 
+
 /* Define custom dark variant for Tailwind v4 */
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -13,4 +14,48 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* === React Tailwind Datepicker Fix for Tailwind v4 === */
+
+.react-tailwindcss-datepicker {
+    @apply relative w-full text-gray-800 dark:text-gray-200;
+}
+
+.react-tailwindcss-datepicker input {
+    @apply bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full;
+}
+
+.react-tailwindcss-datepicker .flex.flex-col.w-full.bg-white {
+    @apply bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg p-2;
+}
+
+.react-tailwindcss-datepicker .days {
+    @apply grid grid-cols-7 gap-1;
+}
+
+.react-tailwindcss-datepicker .day {
+    @apply cursor-pointer text-center text-sm py-2 rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-700;
+}
+
+.react-tailwindcss-datepicker .day.selected,
+.react-tailwindcss-datepicker .day.in-range {
+    @apply bg-blue-600 text-white;
+}
+
+.react-tailwindcss-datepicker .footer,
+.react-tailwindcss-datepicker .shortcuts {
+    @apply flex justify-between items-center text-sm text-gray-700 dark:text-gray-300 mt-2;
+}
+
+.react-tailwindcss-datepicker .footer button {
+    @apply px-3 py-1 rounded-md text-sm font-medium transition-colors;
+}
+
+.react-tailwindcss-datepicker .footer button:first-child {
+    @apply bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100;
+}
+
+.react-tailwindcss-datepicker .footer button:last-child {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
 }
