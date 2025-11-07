@@ -140,7 +140,7 @@ export function DataTable<T extends { id: number }>({
                 {filter.label}:
               </label>
               {filter.name === 'date_range' ? (
-                <div className="flex gap-2 items-center">
+                <div className="flex flex-wrap gap-2 items-center">
                   <input
                     type="date"
                     value={(filter.value as any)?.startDate || ''}
