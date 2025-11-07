@@ -50,7 +50,11 @@ class OrderController extends Controller
         }
 
         if ($request->has('statuses') && !empty($request->statuses)) {
-            $query->whereIn('status', explode(',', $request->statuses));
+            if (is_array($request->statuses)) {
+                $query->whereIn('status', $request->statuses);
+            } else {
+                $query->whereIn('status', explode(',', $request->statuses));
+            }
         }
 
         if ($request->has('checkout_type') && !empty($request->checkout_type)) {

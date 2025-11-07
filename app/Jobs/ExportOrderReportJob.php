@@ -54,22 +54,6 @@ class ExportOrderReportJob implements ShouldQueue
                     $q->whereIn('status', $statuses)
                 );
             $orders = $query->get();
-            // ->map(function ($order) {
-            //     return [
-            //         'order_number' => $order->order_number,
-            //         'total' => $order->total,
-            //         'checkout_type' => $order->checkout_type,
-            //         'status' => $order->status,
-            //         'created_at' => $order->created_at->format('d-m-Y H:i'),
-            //         'customer_name' => $order->customer?->name ?? '-',
-            //         'products' => $order->productOrders->map(function ($po) {
-            //             return [
-            //                 'name' => $po->product?->name ?? '-',
-            //                 'quantity' => $po->quantity,
-            //             ];
-            //         })->toArray(),
-            //     ];
-            // });
             $fileName = 'order_report_' . now()->format('Ymd_His') . '.xlsx';
             $filePath = 'exports/' . $fileName;
             Excel::store(new OrderExport($orders), $filePath, 'public');

@@ -18,7 +18,7 @@ class CustomerController extends Controller
         $query = Customer::query();
 
         if ($search) {
-            $query->where('name', 'like', "%{$search}%")
+            $query->where('fullname', 'like', "%{$search}%")
             ->orWhere('email', 'like', "%{$search}%")
             ->orWhere('phone_number', 'like', "%{$search}%")
             ->orWhere('address', 'like', "%{$search}%")
