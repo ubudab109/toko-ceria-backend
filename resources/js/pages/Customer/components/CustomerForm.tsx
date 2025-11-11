@@ -1,7 +1,7 @@
 import ButtonBack from "@/components/ButtonBack";
 import { CustomerI } from "@/interfaces/CustomerInterface";
 import { countryCodes } from "@/utils/countryCode";
-import {  BookCheck, Flag, List, MailCheck, MapPinHouse, Package, PersonStanding, PlusCircle, Save, Smartphone, Tag } from "lucide-react";
+import { BookCheck, Flag, List, MailCheck, MapPinHouse, Package, PersonStanding, PlusCircle, Save, Smartphone, Tag } from "lucide-react";
 
 interface CustomerFormProps {
     isEdit: boolean;
@@ -156,19 +156,14 @@ export default function CustomerForm({
 
                     {/* Known From */}
                     <FormField id="know_from" label="Mengeal TokCer Dari" icon={BookCheck} errors={errors.measurement}>
-                        <select
+                        <input
                             id="know_from"
-                            value={data.know_from ?? ''}
-                            onChange={(e) => setData("know_from", parseInt(e.target.value, 10) || null)}
-                            required
-                            className={inputClasses('know_from') + ' appearance-none'}
-                        >
-                            <option value="instagram">Instagram</option>
-                            <option value="tiktok">Tikok</option>
-                            <option value="website">Website</option>
-                            <option value="teman">Teman</option>
-                            <option value="lainnya">Lainnya</option>
-                        </select>
+                            type="text"
+                            value={data.know_from}
+                            onChange={(e) => setData("know_from", e.target.value)}
+                            placeholder="Cth: Instagram"
+                            className={inputClasses('know_from')}
+                        />
                     </FormField>
                 </div>
 
