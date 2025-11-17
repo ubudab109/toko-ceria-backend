@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Constants\InventoryHistoryType;
+use App\Constants\OutcomeType;
 use App\Models\Inventory;
 use App\Models\InventoryHistory;
 use App\Models\Product;
 use App\Http\Services\NotificationService;
+use App\Models\Outcome;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -228,7 +230,8 @@ class InventoryController extends Controller
             'stock' => ['required', 'min:1'],
             'type' => ['required', 'in:add,reduce'],
             'description' => ['required'],
-            'final_stock' => ['required', 'min:0']
+            'final_stock' => ['required', 'min:0'],
+            'is_outcome' => ['required_if:type,add', 'boolean']
         ], [
             'stock.required' => 'Harap isi jumlah stok',
             'type.required' => 'Harap pilih jenis penyesuaian',
@@ -239,14 +242,26 @@ class InventoryController extends Controller
         $currentInventory = Inventory::find($id);
         $input = $request->only(['stock', 'description', 'final_stock']);
         $typeBahasa = '';
-        if ($request->type == 'add') {
-            Inventory::where('id', $id)->increment('stock', $input['stock']);
-            $typeBahasa = 'Penambahan';
-        }
-
         if ($request->type == 'reduce') {
             Inventory::where('id', $id)->decrement('stock', $input['stock']);
             $typeBahasa = 'Pengurangan';
+        }
+
+        if ($request->type == 'add') {
+            $existingInventory = Inventory::where('id', $id);
+            $currentStockInventory = $existingInventory->first(); 
+            $typeBahasa = 'Penambahan';
+            if ($request->is_outcome) {
+                $inventoryRoute = route('inventories.show', $id);
+                Outcome::create([
+                    'title' => 'Penambahan Inventori',
+                    'type' => OutcomeType::INVENTORY()->getValue(),
+                    'total' => $currentStockInventory->price * $input['stock'],
+                    'description' => "Pengeluaran untuk penambahan inventori <a href='{$inventoryRoute}'>{$currentStockInventory->name}</a> sebanyak {$input['stock']}",
+
+                ]);
+            }
+            $currentStockInventory->increment('stock', $input['stock']);
         }
         $message = "Terjadi {$typeBahasa} stok sebesar {$input['stock']}";
         $dataHistory = [

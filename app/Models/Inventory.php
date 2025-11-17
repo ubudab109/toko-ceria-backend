@@ -25,4 +25,14 @@ class Inventory extends Model
     {
         return $this->hasMany(InventoryHistory::class, 'inventory_id', 'id');
     }
+
+    public function hppCompositions()
+    {
+        return $this->hasMany(HppComposition::class, 'inventory_id', 'id');
+    }
+    
+    public function hppCompositionItems()
+    {
+        return $this->hasMany(HppCompositionItem::class, 'inventory_id', 'id');
+    }
 }

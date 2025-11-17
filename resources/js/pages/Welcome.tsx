@@ -1,11 +1,20 @@
+import SalesCharts from '@/components/SalesChart';
 import DashboardLayout from '../layouts/DashboardLayout';
-import { Link } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 
 interface WelcomeProps {
     title: string;
 }
 
 export default function Welcome({ title }: WelcomeProps) {
+    const props = usePage().props as unknown as {
+        dailySales: any[];
+        monthlySales: any[];
+        filteredSales: any[];
+        filters: any;
+    };
+    const [dateRange, setDateRange] = useState({ start: props.filters.start, end: props.filters.end });
     return (
         <DashboardLayout>
             <div className="space-y-6">
@@ -27,7 +36,7 @@ export default function Welcome({ title }: WelcomeProps) {
                                 <p className="text-gray-600 dark:text-gray-400 mb-8">
                                     This is your starting point. Explore the sidebar to navigate to different sections.
                                 </p>
-                                
+
                                 {/* Quick Actions */}
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
                                     <Link
@@ -82,6 +91,32 @@ export default function Welcome({ title }: WelcomeProps) {
                                     </Link>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 shadow rounded-lg">
+                    <div className="px-4 py-5 sm:p-6">
+                        <div className="text-center">
+                            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+                                Grafik Penjualan
+                            </h2>
+                            <p className="text-gray-600 dark:text-gray-400 mb-8">
+                                Ini adalah grafik penjualan Toko Ceria
+                            </p>
+                        </div>
+                        <div className="flex items-start justify-start py-12">
+                            {/* CHART DISINI */}
+                            <SalesCharts
+                                dailySales={props.dailySales}
+                                monthlySales={props.monthlySales}
+                                filteredSales={props.filteredSales}
+                                currentRange={dateRange}
+                                onDateRangeChange={(range) => {
+                                  setDateRange(range);
+                                  router.get('/', { date_range: range }, { preserveScroll: true, preserveState: true });
+                                }}
+                            />
                         </div>
                     </div>
                 </div>

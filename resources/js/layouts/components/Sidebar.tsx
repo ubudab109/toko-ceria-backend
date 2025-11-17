@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BaggageClaim, BottleWine, DownloadCloudIcon, ShoppingCart, UserCog2Icon } from 'lucide-react';
+import { BaggageClaim, BanknoteArrowDown, BottleWine, DownloadCloudIcon, ReceiptCentIcon, ShoppingCart, UserCog2Icon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { route } from 'ziggy-js';
 
@@ -72,11 +72,27 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             ),
         },
         {
+            name: 'HPP',
+            href: route('hpp-compositions.index'),
+            routeName: 'hpp-compositions.index',
+            icon: (
+                <ReceiptCentIcon />
+            ),
+        },
+        {
             name: 'Pesanan',
             href: route('orders.index'),
             routeName: 'orders.index',
             icon: (
                 <ShoppingCart />
+            ),
+        },
+        {
+            name: 'Pengeluaran',
+            href: route('outcomes.index'),
+            routeName: 'outcomes.index',
+            icon: (
+                <BanknoteArrowDown />
             ),
         },
         {

@@ -23,4 +23,8 @@ export default defineConfig({
             '@': resolve(__dirname, 'resources/js'),
         },
     },
+    server: {
+        port: 3001, // Change this to your desired port
+        // You can also add other server options here, e.g., host: true
+    },
 });

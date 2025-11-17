@@ -19,9 +19,9 @@ interface FiltersI {
 
 interface InventoryDetailPageProps extends PageProps {
     inventoryHistories: PaginationI<InventoryHistoryI>;
-    products: ProductI[],
-    inventory: InventoryI
-    filters: FiltersI
+    products: ProductI[];
+    inventory: InventoryI;
+    filters: FiltersI;
 }
 
 export default function Edit(): React.ReactNode {

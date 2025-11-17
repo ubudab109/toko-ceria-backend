@@ -6,7 +6,7 @@ import { route } from 'ziggy-js';
 
 interface CategoryFormProps {
     isEdit: boolean;
-    category?: CategoryI
+    category?: CategoryI;
 }
 
 export default function CategoryForm({
@@ -30,7 +30,7 @@ export default function CategoryForm({
 
     return (
         <div className="max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-            <ButtonBack />
+            <ButtonBack backTo="categories.index" />
             <h1 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
                 {isEdit ? "Edit Kategori" : "Tambah Kategori"}
             </h1>

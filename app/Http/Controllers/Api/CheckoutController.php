@@ -6,6 +6,7 @@ use App\Constants\InventoryHistoryType;
 use App\Constants\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Services\NotificationService;
+use App\Jobs\WhatsappMessageJob;
 use App\Models\Customer;
 use App\Models\Inventory;
 use App\Models\Order;
@@ -29,7 +30,6 @@ class CheckoutController extends Controller
             'carts.*.product_id' => ['required', Rule::exists('products', 'id')],
             'carts.*.quantity' => ['required', 'integer', 'min:1'],
             'fullname' => ['required', 'string'],
-            'email' => ['required', 'email'],
             'phone_code' => ['required', 'string'],
             'phone_number' => ['required', 'string'],
             'age' => ['required', 'integer', 'min:21'],
@@ -41,7 +41,6 @@ class CheckoutController extends Controller
             'carts.required' => 'Harap memilih produk Anda',
             'carts.*.quantity.required' => 'Harap masukkan jumlah produk yang ingin Anda beli',
             'fullname.required' => 'Harap masukkan nama lengkap Anda',
-            'email.required' => 'Harap masukkan email Anda',
             'email.email' => 'Email tidak valid',
             'phone_number.required' => 'Harap masukkan nomor HP/WhatsApp Anda',
             'age.required' => 'Harap masukkan umur Anda',
@@ -147,7 +146,8 @@ class CheckoutController extends Controller
 
 
             DB::commit();
-
+            $message = "Halo Admin Toko Ceria. Ada yang order lewat website nih. Tolong diperiksa ya. Nomor ordernya adalah: {$order->order_number}";
+            WhatsappMessageJob::dispatch($order, $message);
             return response()->json([
                 'status' => 'success',
                 'message' => 'Pesanan Anda berhasil dibuat. Silakan menunggu kontak dari admin kami.',

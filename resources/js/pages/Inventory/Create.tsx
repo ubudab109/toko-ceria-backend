@@ -49,5 +49,5 @@ export default function Create(): React.ReactNode {
                 key='inventory-form-create'
             />
         </DashboardLayout>
-    )
+    );
 }
