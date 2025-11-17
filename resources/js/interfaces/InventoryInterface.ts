@@ -38,4 +38,5 @@ export interface StockAdjusmentForm {
   description: string;
   type: string;
   final_stock: number;
+  is_outcome?: boolean;
 }

@@ -164,6 +164,29 @@ export default function ModalStock({
                                         )
                                     }
                                 </div>
+                                {
+                                    data.type === 'add' && (
+                                        <div className="col-span-2">
+                                            <div className="flex justify-between items-center py-2">
+                                                <span className="text-sm font-medium text-gray-900 dark:text-white">
+                                                    Catat Sebagai Pengeluaran
+                                                </span>
+
+                                                <label className="relative inline-flex items-center cursor-pointer">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={data.is_outcome}
+                                                        value={data.is_outcome ? 'true': 'false'}
+                                                        onChange={(e) => setData('is_outcome', e.target.checked)}
+                                                        className="sr-only peer"
+                                                    />
+                                                    <div className="w-11 h-6 bg-gray-200 rounded-full peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:bg-blue-600 transition-all"></div>
+                                                    <span className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform peer-checked:translate-x-5"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    )
+                                }
                             </div>
                             <button disabled={Number.isNaN(data.final_stock) || data.final_stock < 0} type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg>

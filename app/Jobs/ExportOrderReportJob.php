@@ -22,7 +22,6 @@ class ExportOrderReportJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $exportRecord;
 

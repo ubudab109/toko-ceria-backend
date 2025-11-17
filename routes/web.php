@@ -5,18 +5,22 @@ use Inertia\Inertia;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataExportController;
+use App\Http\Controllers\HPPController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OutcomeController;
 use App\Http\Controllers\ProductController;
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', fn() => Inertia::render('Welcome', [
-        'title' => 'Welcome Page',
-    ]))->name('dashboard');
+    Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('categories', CategoryController::class)->names('categories');
+    Route::resource('hpp-compositions', HPPController::class)->names('hpp-compositions');
+    Route::put('batch-hpp-compositions/{id}', [HPPController::class, 'deployBatch'])->name('batch.hpp-compositions');
+    Route::resource('outcomes', OutcomeController::class)->names('outcomes');
     // Route::resource('products', ProductController::class)->names('products');
     // Route::get('')
     Route::get('products', [ProductController::class, 'index'])->name('products.index');

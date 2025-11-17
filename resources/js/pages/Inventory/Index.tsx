@@ -39,6 +39,7 @@ export default function Index(): React.ReactNode {
         stock: 0,
         type: 'reduce',
         final_stock: 0,
+        is_outcome: false,
     })
 
     const columns: Column<InventoryI>[] = [
