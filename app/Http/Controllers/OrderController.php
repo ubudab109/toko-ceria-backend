@@ -127,7 +127,8 @@ class OrderController extends Controller
             'product_orders.*.quantity' => [
                 'required',
                 'min:1'
-            ]
+            ],
+            'created_at' => ['nullable'],
         ], [
             'order_number.required' => 'Nomor order diperlukan. Silahkan generate nomor order',
             'order_number.unique' => 'Order number sudah ada pada data. Silahkan generate ulang nomor order',
@@ -230,7 +231,8 @@ class OrderController extends Controller
             'product_orders.*.quantity' => [
                 'required',
                 'min:1'
-            ]
+            ],
+            'created_at' => ['nullable'],
         ], [
             'order_number.required' => 'Nomor order diperlukan. Silahkan generate nomor order',
             'order_number.unique' => 'Order number sudah ada pada data. Silahkan generate ulang nomor order',
@@ -401,6 +403,7 @@ class OrderController extends Controller
             $order->customer_id = $request->customer_id;
             $order->checkout_type = $request->checkout_type;
             $order->status = $request->status;
+            $order->created_at = $request->created_at;
             $order->save();
 
             DB::commit();
