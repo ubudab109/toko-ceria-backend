@@ -56,7 +56,8 @@ export default function Create(): React.ReactNode {
                     price: 0,
                 }
             }
-        ]
+        ],
+        created_at: new Date(),
     });
 
     const handleSubmit = (e: React.FormEvent) => {

@@ -13,6 +13,7 @@ class Order extends Model
         'total',
         'checkout_type',
         'status',
+        'created_at'
     ];
 
     protected $appends = ['total_product_ordered', 'badgeStatus'];

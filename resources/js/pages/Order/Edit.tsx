@@ -7,6 +7,7 @@ import { useForm, usePage } from "@inertiajs/react";
 import OrderForm from "./components/OrderForm";
 import { route } from "ziggy-js";
 import toast from "react-hot-toast";
+import dayjs from 'dayjs';
 
 interface OrderEditProps extends PageProps {
     order: OrderI;
@@ -61,7 +62,8 @@ export default function Create(): React.ReactNode {
                     price: prod.product.price,
                 }
             }
-        })
+        }),
+        created_at: order.created_at ? dayjs(order.created_at).format('YYYY-MM-DD') : '',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
