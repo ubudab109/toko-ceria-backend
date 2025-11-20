@@ -28,7 +28,7 @@ class Inventory extends Model
 
     public function hppCompositions()
     {
-        return $this->hasMany(HppComposition::class, 'inventory_id', 'id');
+        return $this->hasOne(HppComposition::class, 'inventory_id', 'id');
     }
     
     public function hppCompositionItems()

@@ -217,12 +217,7 @@ class HPPController extends Controller
         $hppComposition = HppComposition::with('inventory', 'hppCategories', 'hppItems.hppCategory', 'hppItems.inventory')
             ->find($id);
 
-        return Inertia::render('HPP/Edit', [
-            'flash' => ['success' => 'Komposisi HPP berhasil diubah!'],
-            'inventoryProducts' => $inventoryProducts,
-            'inventories' => $inventories,
-            'hppComposition' => $hppComposition,
-        ]);
+        return redirect()->back()->with('success', 'Komposisi HPP berhasil diubah!');
     }
 
     public function destroy(int $id)

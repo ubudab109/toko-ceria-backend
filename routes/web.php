@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('data-exports', DataExportController::class)->names('data-exports');
     Route::put('read-notification/{id}', [NotificationController::class, 'read'])->name('read.notification');
     Route::put('read-notification-all', [NotificationController::class, 'readAll'])->name('read.notification-all');
+    Route::resource('petty-cash', App\Http\Controllers\PettyCashController::class)->only(['index', 'store']);
 });
 
 Route::middleware(['guest'])->group(function () {

@@ -2,6 +2,15 @@ import { OrderStatus } from "@/types/order";
 import { CustomerI } from "./CustomerInterface";
 import { ProductI } from "./ProductInterface";
 
+export interface OrderMarginI {
+  product_name: string;
+  hpp_price: number;
+  total_hpp_price: number;
+  product_price: number;
+  order_quantity: number;
+  margin_profit: number;
+}
+
 export interface OrderStatusDescriptionI {
   status: string;
   desc: string;
@@ -34,4 +43,5 @@ export interface OrderI {
   customer: CustomerI;
   created_at?: Date | string;
   notes?: string | null;
+  margins?: OrderMarginI[];
 }

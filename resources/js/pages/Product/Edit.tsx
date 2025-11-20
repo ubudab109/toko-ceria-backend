@@ -29,9 +29,9 @@ export default function Edit(): React.ReactNode {
             }
         }),
         category: {
-            id: product.category.id,
-            description: product.category.description,
-            name: product.category.name
+            id: product.category?.id || 0,
+            description: product.category?.description || '',
+            name: product.category?.name || ''
         },
     });
 
@@ -54,9 +54,9 @@ export default function Edit(): React.ReactNode {
                 is_thumbnail: img.is_thumbnail
             })),
             category: {
-                id: product.category.id,
-                name: product.category.name,
-                description: product.category.description
+                id: product.category?.id || 0,
+                name: product.category?.name || '',
+                description: product.category?.description || ''
             }
         });
     }, [product]);

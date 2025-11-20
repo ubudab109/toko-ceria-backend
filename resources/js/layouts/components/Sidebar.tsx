@@ -103,6 +103,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <DownloadCloudIcon />
             ),
         },
+        {
+            name: 'Petty Cash',
+            href: route('petty-cash.index'),
+            routeName: 'petty-cash.index',
+            icon: (
+                <BanknoteArrowDown />
+            ),
+        },
     ];
 
 
@@ -163,8 +171,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                                     key={item.name}
                                     href={item.href}
                                     className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${isActive
-                                            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400'
-                                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400'
+                                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                                         }`}
                                     onClick={onClose}
                                 >
@@ -201,8 +209,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                                     key={item.name}
                                     href={item.href}
                                     className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${isActive
-                                            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400'
-                                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400'
+                                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                                         }`}
                                 >
                                     <span className="mr-3">{item.icon}</span>
