@@ -181,7 +181,8 @@ class DashboardController extends Controller
         }
 
 
-        $totalOrdersToday = $ordersToday->count();
+        $totalOrdersToday = Order::whereDate('created_at', Carbon::today())
+        ->whereNotIn('status', [OrderStatus::CANCELLED()->getValue()])->count();
         $newCustomersToday = \App\Models\Customer::whereDate('created_at', Carbon::today())->count();
         $pettyCash = \App\Models\CompanyAsset::where('name', 'petty_cash')->value('value');
 
