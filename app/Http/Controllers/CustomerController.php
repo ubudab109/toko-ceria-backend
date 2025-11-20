@@ -19,10 +19,10 @@ class CustomerController extends Controller
 
         if ($search) {
             $query->where('fullname', 'like', "%{$search}%")
-            ->orWhere('email', 'like', "%{$search}%")
-            ->orWhere('phone_number', 'like', "%{$search}%")
-            ->orWhere('address', 'like', "%{$search}%")
-            ->orWhere('know_from', 'like', "%{$search}%");
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('phone_number', 'like', "%{$search}%")
+                ->orWhere('address', 'like', "%{$search}%")
+                ->orWhere('know_from', 'like', "%{$search}%");
         }
         $customers = $query
             ->orderBy('created_at', 'desc')
@@ -52,7 +52,7 @@ class CustomerController extends Controller
     {
         $request->validate([
             'fullname' => ['required'],
-            'email' => ['required', 'email', 'unique:customers'],
+            'email' => ['unique:customers'],
             'phone_code' => ['nullable'],
             'phone_number' => ['nullable'],
             'age' => ['nullable'],

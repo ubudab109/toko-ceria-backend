@@ -16,7 +16,27 @@ class Order extends Model
         'created_at'
     ];
 
-    protected $appends = ['total_product_ordered', 'badgeStatus'];
+    protected $appends = ['total_product_ordered', 'badgeStatus', 'margins'];
+
+    public function getMarginsAttribute()
+    {
+        $data = [];
+        foreach ($this->productOrders as $po) {
+            $hppComposition = $po->product->inventory->hppCompositions;
+            if ($hppComposition) {
+                $totalHppPrice = $hppComposition->total * $po->quantity;
+                $data[] = [
+                    'product_name' => $po->product->name,
+                    'hpp_price' => $hppComposition->total,
+                    'total_hpp_price' => $totalHppPrice,
+                    'product_price' => $po->product->price,
+                    'order_quantity' => $po->quantity,
+                    'margin_profit' => ($po->quantity * $po->product->price) - $totalHppPrice
+                ];
+            }
+        };
+        return $data;
+    }
 
     public function getBadgeStatusAttribute()
     {

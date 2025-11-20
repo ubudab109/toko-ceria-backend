@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {
   ResponsiveContainer,
   LineChart,
@@ -27,6 +27,11 @@ type ChartProps = {
   filteredSales: SaleData[];
   currentRange: DateRange;
   onDateRangeChange: (range: DateRange) => void;
+  titles?: {
+    daily: string;
+    monthly: string;
+    filtered: string;
+  };
 };
 
 export default function SalesCharts({
@@ -35,6 +40,11 @@ export default function SalesCharts({
   filteredSales,
   currentRange,
   onDateRangeChange,
+  titles = {
+    daily: "Penjualan Hari Ini",
+    monthly: "Penjualan Bulan Ini",
+    filtered: "Filter Penjualan"
+  }
 }: ChartProps) {
 
   const handleDateChange = (key: keyof DateRange, value: string) => {
@@ -44,10 +54,10 @@ export default function SalesCharts({
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">
-      {/* Grafik Penjualan Hari Ini */}
+      {/* Grafik Harian */}
       <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 shadow-sm">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
-          Penjualan Hari Ini
+          {titles.daily}
         </h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={dailySales}>
@@ -60,10 +70,10 @@ export default function SalesCharts({
         </ResponsiveContainer>
       </div>
 
-      {/* Grafik Penjualan Bulan Ini */}
+      {/* Grafik Bulanan */}
       <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 shadow-sm">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
-          Penjualan Bulan Ini
+          {titles.monthly}
         </h3>
         <ResponsiveContainer width="100%" height={250}>
           <LineChart data={monthlySales}>
@@ -76,10 +86,10 @@ export default function SalesCharts({
         </ResponsiveContainer>
       </div>
 
-      {/* Grafik Filter Penjualan */}
+      {/* Grafik Filter */}
       <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 shadow-sm">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-          Filter Penjualan
+          {titles.filtered}
         </h3>
         <div className="flex items-center gap-2 mb-4">
           <input

@@ -2,7 +2,7 @@ import ActionGroup from "@/components/ActionGroup";
 import { Column, DataTable } from "@/components/DataTable";
 import OrderStatusBadge from "@/components/OrderStatusBadge";
 import { useInertiaFilters } from "@/hooks/useInertiaFilters";
-import { OrderI, OrderStatusI, ProductOrderI } from "@/interfaces/OrderInterface";
+import { OrderI, OrderMarginI, OrderStatusI, ProductOrderI } from "@/interfaces/OrderInterface";
 import { PaginationI } from "@/interfaces/PaginationInterface";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { formatDate, formatRupiah } from "@/utils/helpert";
@@ -57,23 +57,34 @@ export default function Index(): React.ReactNode {
         {
             key: 'products', label: 'Produk', render: (row: OrderI) => {
                 return (
-                    <ul>
+                    <div className="space-y-3 min-w-[250px]">
                         {
-                            row.product_orders.map((prod: ProductOrderI) => (
-                                <li key={prod.id}>
-                                    <p className="font-medium text-gray-900 dark:text-gray-100">{prod.product.name}</p>
-                                    {prod.product.category && (
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                                            {prod.product.category.name}
-                                        </p>
-                                    )}
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                                        {formatRupiah(prod.product.price)}
-                                    </p>
-                                </li>
+                            row.margins?.map((prod: OrderMarginI, index: number) => (
+                                <div key={index} className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 shadow-sm">
+                                    <div className="flex justify-between items-start mb-2 border-b border-gray-100 dark:border-gray-700 pb-2">
+                                        <span className="font-semibold text-gray-900 dark:text-white text-sm">{prod.product_name}</span>
+                                        <span className="text-xs font-medium px-2 py-0.5 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-700 dark:text-gray-300">x{prod.order_quantity}</span>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-xs">
+                                        <div className="text-gray-500 dark:text-gray-400">Harga Produk:</div>
+                                        <div className="text-right font-medium text-gray-900 dark:text-gray-200">{formatRupiah(prod.product_price, true)}</div>
+
+                                        <div className="text-gray-500 dark:text-gray-400">Harga Total:</div>
+                                        <div className="text-right font-medium text-gray-900 dark:text-gray-200">{formatRupiah(prod.product_price * prod.order_quantity, true)}</div>
+
+                                        <div className="text-gray-500 dark:text-gray-400">Harga HPP:</div>
+                                        <div className="text-right font-medium text-gray-900 dark:text-gray-200">{formatRupiah(prod.hpp_price, true)}</div>
+
+                                        <div className="text-gray-500 dark:text-gray-400">Total HPP:</div>
+                                        <div className="text-right font-medium text-gray-900 dark:text-gray-200">{formatRupiah(prod.total_hpp_price, true)}</div>
+
+                                        <div className="text-gray-500 dark:text-gray-400 font-medium">Margin:</div>
+                                        <div className="text-right font-bold text-green-600 dark:text-green-400">{formatRupiah(prod.margin_profit, true)}</div>
+                                    </div>
+                                </div>
                             ))
                         }
-                    </ul>
+                    </div>
                 );
             },
         },

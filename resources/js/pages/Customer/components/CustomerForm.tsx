@@ -58,7 +58,7 @@ export default function CustomerForm({
     return (
         // Card Container
         <div className="w-full max-w-full p-6 sm:p-8 bg-white dark:bg-gray-800 shadow-2xl rounded-xl border border-gray-100 dark:border-gray-700 transition-all duration-300 mx-auto">
-            <ButtonBack backTo="customers.index"/>
+            <ButtonBack backTo="customers.index" />
             {/* Form Title */}
             <h1 className="flex items-center text-3xl font-extrabold text-gray-900 dark:text-white mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
                 <Package className="w-8 h-8 mr-3 text-blue-600" />
@@ -86,7 +86,7 @@ export default function CustomerForm({
                         />
                     </FormField>
                     {/* Email */}
-                    <FormField isRequired={true} id="email" label="Email" icon={MailCheck} errors={errors.email}>
+                    <FormField isRequired={false} id="email" label="Email" icon={MailCheck} errors={errors.email}>
                         <input
                             id="name"
                             type="email"
