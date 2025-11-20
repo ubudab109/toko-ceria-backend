@@ -14,7 +14,7 @@ class DashboardController extends Controller
     public function dashboard(Request $request)
     {
         $dailySales = Order::whereDate('created_at', Carbon::today())
-            ->where('status', OrderStatus::PAID()->getValue())
+            ->whereIn('status', [OrderStatus::PAID()->getValue(), OrderStatus::COMPLETED()->getValue()])
             ->selectRaw('DATE(created_at) as date, SUM(total) as total')
             ->groupBy('date')
             ->get();
@@ -27,7 +27,7 @@ class DashboardController extends Controller
 
         // Ambil data penjualan
         $sales = Order::whereBetween('created_at', [$start, $end])
-            ->where('status', OrderStatus::PAID()->getValue())
+            ->whereIn('status', [OrderStatus::PAID()->getValue(), OrderStatus::COMPLETED()->getValue()])
             ->selectRaw('DATE(created_at) as date, SUM(total) as total')
             ->groupBy('date')
             ->pluck('total', 'date');
@@ -54,7 +54,7 @@ class DashboardController extends Controller
 
         $filteredSales = Order::whereBetween('created_at', [$range['start'], $range['end']])
             ->selectRaw('DATE(created_at) as date, SUM(total) as total')
-            ->where('status', OrderStatus::PAID()->getValue())
+            ->whereIn('status', [OrderStatus::PAID()->getValue(), OrderStatus::COMPLETED()->getValue()])
             ->groupBy('date')
             ->get();
 
@@ -96,7 +96,7 @@ class DashboardController extends Controller
         // --- PROFIT MARGIN DATA ---
         // Profit Today
         $ordersToday = Order::whereDate('created_at', Carbon::today())
-            ->where('status', OrderStatus::PAID()->getValue())
+            ->whereIn('status', [OrderStatus::PAID()->getValue(), OrderStatus::COMPLETED()->getValue()])
             ->get();
         $profitToday = 0;
         foreach ($ordersToday as $order) {
@@ -108,7 +108,7 @@ class DashboardController extends Controller
         // Profit This Month
         $ordersThisMonth = Order::whereMonth('created_at', $currentMonth)
             ->whereYear('created_at', $currentYear)
-            ->where('status', OrderStatus::PAID()->getValue())
+            ->whereIn('status', [OrderStatus::PAID()->getValue(), OrderStatus::COMPLETED()->getValue()])
             ->get();
         $profitThisMonth = 0;
         foreach ($ordersThisMonth as $order) {
@@ -150,7 +150,7 @@ class DashboardController extends Controller
 
         // Filtered Profit
         $ordersFiltered = Order::whereBetween('created_at', [$range['start'], $range['end']])
-            ->where('status', OrderStatus::PAID()->getValue())
+            ->whereIn('status', [OrderStatus::PAID()->getValue(), OrderStatus::COMPLETED()->getValue()])
             ->get();
         $filteredProfitData = [];
         foreach ($ordersFiltered as $order) {
