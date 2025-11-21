@@ -12,6 +12,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with('category')
+            ->where('is_public', true)
             ->get();
         $categories = Category::pluck('name');
         return response()->json([
@@ -37,11 +38,13 @@ class ProductController extends Controller
         if ($product->category_id) {
             $relatedProducts = Product::where('category_id', $product->category_id)
                 ->whereNotIn('id', [$product->id])
+                ->where('is_public', true)
                 ->with('category', 'productImages')
                 ->take(4)
                 ->get();
         } else {
             $relatedProducts = Product::with('category', 'productImages')
+                ->where('is_public', true)
                 ->whereNotIn('id', [$product->id])
                 ->take(4)
                 ->get();

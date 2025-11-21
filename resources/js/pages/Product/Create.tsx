@@ -31,6 +31,7 @@ export default function Create(): ReactNode {
             description: '',
             name: ''
         },
+        is_public: true,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
