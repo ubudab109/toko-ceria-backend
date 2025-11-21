@@ -17,13 +17,16 @@ class Product extends Model
         'abv',
         'volume',
         'measurement',
-        'limited_stock'
+        'limited_stock',
+        'image',
+        'is_public'
     ];
 
     protected $appends = ['stock', 'thumbnail'];
 
     protected $casts = [
-        'price' => 'float'
+        'price' => 'float',
+        'is_public' => 'boolean',
     ];
 
     protected static function boot()

@@ -33,6 +33,7 @@ export default function Edit(): React.ReactNode {
             description: product.category?.description || '',
             name: product.category?.name || ''
         },
+        is_public: product.is_public,
     });
 
     useEffect(() => {
@@ -57,7 +58,8 @@ export default function Edit(): React.ReactNode {
                 id: product.category?.id || 0,
                 name: product.category?.name || '',
                 description: product.category?.description || ''
-            }
+            },
+            is_public: product.is_public,
         });
     }, [product]);
 

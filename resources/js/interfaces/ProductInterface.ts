@@ -27,6 +27,7 @@ export interface ProductI {
   measurement?: string;
   productImages?: ProductImageI[];
   product_images?: ProductImageI[];
+  is_public?: boolean;
 }
 
 export interface ProductRequestI {
